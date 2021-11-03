@@ -1,10 +1,11 @@
+// Binary Indexed Tree
 // Build: O(NlogN)
 // Space: O(N)
 // update: O(logN)
 // Cal Interval Sum: O(logN)
 const int N = 10000000;
 int t[N + 1]; // 第零格無作用，數列從第一項到第 N 項
-// 快速求出最低位的 bit(1)
+// 快速求出最低位的 bit (1)
 int lower_bit(int n){
     return n & -n;
 }
@@ -17,7 +18,7 @@ int sum(int n){
     }
     return s;
 }
-// value[n] += d
+// value[n] = value[n] + d
 void add(int n, int d){
     while (n <= N){
         t[n] = t[n] + d;
