@@ -1,52 +1,31 @@
-struct edge {
-  int s, t;
-  LL d;
-  edge(){};
-  edge(int s, int t, LL d) : s(s), t(t), d(d) {}
-};
-
-struct heap {
-  LL d;
-  int p; // point
-  heap(){};
-  heap(LL d, int p) : d(d), p(p) {}
-  bool operator<(const heap &b) const { return d > b.d; }
-};
-
-int d[N], p[N];
-vector<edge> edges;
-vector<int> G[N];
-bitset<N> vis;
-
-void Dijkstra(int ss){
-
-    priority_queue<heap> Q;
-
-    for (int i = 0; i < V; i++){
-        d[i] = INF;
+struct Item{
+    int u, dis;
+    // 取路徑最短
+    bool operator < (const Item &other) const{
+        return dis > other.dis;
     }
-
-    d[ss] = 0;
-    p[ss] = -1;
-    vis.reset() : Q.push(heap(0, ss));
-    heap x;
-
-    while (!Q.empty()){
-
-        x = Q.top();
-        Q.pop();
-        int p = x.p;
-
-        if (vis[p])
+};
+int dis[maxn];
+vector<Edge> G[maxn];
+void dijkstra(int s){
+    for(int i = 0; i <= n; i++){
+        dis[i] = inf;
+    }
+    dis[s] = 0;
+    priority_queue<Item> pq;
+    pq.push({s, 0});
+    while(!pq.empty()){
+        // 取路徑最短的點
+        Item now = pq.top();
+        pq.pop();
+        if(now.dis > dis[now.u]){
             continue;
-        vis[p] = 1;
-
-        for (int i = 0; i < G[p].size(); i++){
-            edge &e = edges[G[p][i]];
-            if (d[e.t] > d[p] + e.d){
-                d[e.t] = d[p] + e.d;
-                p[e.t] = G[p][i];
-                Q.push(heap(d[e.t], e.t));
+        }
+        // 鬆弛更新，把與 now.u 相連的點都跑一遍
+        for(Edge e : G[now.u]){
+            if(dis[e.v] > now.dis + e.w){
+                dis[e.v] = now.dis + e.w;
+                pq.push({e.v, dis[e.v]});
             }
         }
     }
