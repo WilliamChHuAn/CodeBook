@@ -1,31 +1,44 @@
-struct Item{
-    int u, dis;
-    // 取路徑最短
-    bool operator < (const Item &other) const{
-        return dis > other.dis;
+int M;  // number of vertex
+int N;  // number of edge
+int s, t, w;
+
+struct Edge{
+
+    int t, w;
+
+    bool operator < (const Edge &rhs) const {
+        return w > rhs.w;
     }
 };
-int dis[maxn];
-vector<Edge> G[maxn];
-void dijkstra(int s){
-    for(int i = 0; i <= n; i++){
-        dis[i] = inf;
+
+int dis[100001];
+vector<Edge> G[100001];
+
+void Dijkstra(int s){
+
+    for(int i = 0; i <= M; i++){
+        dis[i] = 1e9;
     }
+
     dis[s] = 0;
-    priority_queue<Item> pq;
+    priority_queue<Edge> pq;
+
     pq.push({s, 0});
+
     while(!pq.empty()){
-        // 取路徑最短的點
-        Item now = pq.top();
+
+        Edge now = pq.top();
         pq.pop();
-        if(now.dis > dis[now.u]){
+
+        if(now.w > dis[now.t]){
             continue;
         }
-        // 鬆弛更新，把與 now.u 相連的點都跑一遍
-        for(Edge e : G[now.u]){
-            if(dis[e.v] > now.dis + e.w){
-                dis[e.v] = now.dis + e.w;
-                pq.push({e.v, dis[e.v]});
+
+        // relax
+        for(Edge e: G[now.t]){
+            if(dis[e.t] > now.w + e.w){
+                dis[e.t] = now.w + e.w;
+                pq.push({e.t, dis[e.t]});
             }
         }
     }
