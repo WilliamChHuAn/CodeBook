@@ -45,7 +45,6 @@ int main(){
 
     while(cin >> n && n){
 
-        ans = 0;
         memset(a, 0, sizeof(a));
         memset(buf, 0, sizeof(buf));
 
